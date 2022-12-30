@@ -18,12 +18,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.hms.learningnumbers.databinding.FragmentResultBinding
 
 
 class ResultFragment: Fragment() {
     private var _binding: FragmentResultBinding? = null
     private val binding get() = _binding!!
+
+    private val args: ResultFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,14 +39,23 @@ class ResultFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.btnCamera.setOnClickListener {
-//            val action = UploadFragmentDirections.actionUploadFragmentToLearnFragment()
-//            view.findNavController().navigate(action)
-//        }
+
+        binding.buttonRestart.setOnClickListener{
+            val action= ResultFragmentDirections.actionResultFragmentToUploadFragment()
+               findNavController().navigate(action)
+        }
+
+        val result = args.result
+
+        if (result == true){
+            binding.imageView.setImageResource(R.drawable.result_true)
+            binding.textResult.setText(R.string.result_correct)
+        } else {
+            binding.imageView.setImageResource(R.drawable.result_false)
+            binding.textResult.setText(R.string.result_false)
+        }
 
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()

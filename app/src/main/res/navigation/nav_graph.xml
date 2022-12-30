@@ -35,10 +35,20 @@
         <argument
             android:name="filepath"
             app:argType="string" />
+        <argument
+            android:name="moveActtion"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.hms.learningnumbers.ResultFragment"
         android:label="fragment_result"
-        tools:layout="@layout/fragment_result" />
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="result"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_resultFragment_to_uploadFragment"
+            app:destination="@id/uploadFragment" />
+    </fragment>
 </navigation>

@@ -73,7 +73,7 @@ class StartFragment : Fragment() {
             }
 
             if(allAreGranted) {
-                Toast.makeText(context, "permission ok", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "permission ok", Toast.LENGTH_SHORT).show()
             }
         }
     }

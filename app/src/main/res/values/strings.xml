@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">learningnumbers</string>
+    <string name="app_name">Learning Numbers</string>
     <string name="btn_start">Start</string>
     <string name="how_many">How many?</string>
     <string name="number_is">Number is:</string>
@@ -9,4 +9,10 @@
     <string name="sec_text">Lets learn together!</string>
     <string name="todo">TODO</string>
     <string name="start_again">restart</string>
+    <string name="result_correct">CORRECT!</string>
+    <string name="result_false">FALSE!</string>
+    <string name="button_random">GET RANDOM</string>
+    <string name="upload_image_from">Upload image from:</string>
+    <string name="button_gallery">gallery</string>
+    <string name="number_input">\?</string>
 </resources>

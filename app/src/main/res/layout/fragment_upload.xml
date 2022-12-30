@@ -63,7 +63,7 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 app:layout_constraintHeight_percent="0.1"
-                android:text="Upload image from:"
+                android:text="@string/upload_image_from"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/guideline_card_top" />
@@ -73,19 +73,20 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="15dp"
-                android:text="camera"
+                android:text="@string/button_random"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_image_load"
                 app:layout_constraintWidth_percent="0.6"
+                android:backgroundTint="@color/purple_200"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.rounded" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_gallery"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="gallery"
+                android:text="@string/button_gallery"
                 app:layout_constraintHeight_percent="0.2"
                 app:layout_constraintWidth_percent="0.6"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.rounded"

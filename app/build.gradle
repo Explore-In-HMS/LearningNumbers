@@ -68,4 +68,7 @@ dependencies {
     implementation 'com.huawei.hms:ml-computer-vision-object-detection-model:3.7.0.301'
     // Speech to text
     implementation "com.huawei.hms:ml-computer-voice-asr-plugin:3.7.0.301"
+
+
+
 }

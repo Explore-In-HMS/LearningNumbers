@@ -55,7 +55,7 @@
 
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_image_load"
+                android:id="@+id/text_result"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
@@ -67,6 +67,7 @@
                 app:layout_constraintTop_toTopOf="@id/guideline_card_top" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_restart"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintHeight_percent="0.15"
@@ -76,7 +77,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/guideline_card_bottom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_image_load" />
+                app:layout_constraintTop_toBottomOf="@+id/text_result" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_card_bottom"

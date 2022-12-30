@@ -18,6 +18,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
 import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +28,8 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.airbnb.lottie.LottieAnimationView
 import com.hms.learningnumbers.databinding.FragmentLearnBinding
@@ -40,8 +43,9 @@ import com.huawei.hms.mlsdk.common.MLApplication
 import com.huawei.hms.mlsdk.common.MLFrame
 import com.huawei.hms.mlsdk.objects.MLObjectAnalyzerSetting
 
-class LearnFragment : Fragment(), MLAsrListener
-{
+
+class LearnFragment : Fragment() {
+
     private var _binding: FragmentLearnBinding? = null
     private val binding get() = _binding!!
 
@@ -50,8 +54,14 @@ class LearnFragment : Fragment(), MLAsrListener
     private var bitmap: Bitmap? = null
 
 
+    private var numObj= 1
+    private var numSpc= 1
 
     private lateinit var micButton: LottieAnimationView
+
+    object utils{
+        const val API_KEY = "YOUR API KEY HERE"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,9 +74,8 @@ class LearnFragment : Fragment(), MLAsrListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val img = args.filepath
-        Log.e(ContentValues.TAG, "path $img")
-        bitmap = BitmapFactory.decodeFile(img)
+        bitmap = moveAction()
+
         binding.imageView.setImageBitmap(bitmap)
 
         micButton = binding.micLottie
@@ -74,40 +83,35 @@ class LearnFragment : Fragment(), MLAsrListener
         micButton.setOnClickListener{
             if (micButton.progress == 0f){
                 micButton.playAnimation()
-                runObjectDetection(BitmapFactory.decodeFile(img)).run {
-                speechToText()
-                    micButton.cancelAnimation()
+                moveAction()?.let { it1 ->
+                    runObjectDetection(it1).run {
+                        speechToText()
+                    }
                 }
 
+
+            } else {
+                micButton.progress = 0f
+
             }
-            //            else {
-//                micButton.cancelAnimation()
-//
-//            }
         }
-
-
-
-//        binding.micDeactive.setOnClickListener {
-//            runObjectDetection(getImageAsBitmap()).run {
-//                speechToText()
-//            }
-//        }
 
     }
 
-    //    fun getImageAsBitmap(): Bitmap {
-//        val img = args.filepath
-//        Log.e(ContentValues.TAG, "path $img")
-//        bitmap = BitmapFactory.decodeFile(img)
-//        Log.e(ContentValues.TAG, "bune $bitmap")
-//        return
-//        return BitmapFactory.decodeResource(resources, R.drawable.sun)
-//    }
+    fun moveAction(): Bitmap? {
+        val moveAct = args.moveActtion
+        val imgPath = args.filepath
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+        if (moveAct == 0){
+            Log.e(ContentValues.TAG, "path $imgPath")
+            return BitmapFactory.decodeFile(imgPath)
+        } else {
+            val assetManager = requireContext().assets
+            val inputStream = assetManager.open(imgPath)
+            return BitmapFactory.decodeStream(inputStream)
+
+        }
+
     }
 
 
@@ -122,80 +126,93 @@ class LearnFragment : Fragment(), MLAsrListener
         val frame = MLFrame.fromBitmap(bitmap)
         val task = analyzer!!.asyncAnalyseFrame(frame)
         task.addOnSuccessListener {
-            Toast.makeText(requireContext(), "Number is: ${it.size}", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireContext(), "Number is: ${it.size}", Toast.LENGTH_LONG).show()
+            numObj = it.size
         }.addOnFailureListener {
             Toast.makeText(requireContext(), "Unknown error", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun speechToText() {
-//        MLApplication.getInstance().apiKey = utils.API_KEY
-//        val intent = Intent(activity, MLAsrCaptureActivity::class.java)
-//            .putExtra(MLAsrCaptureConstants.LANGUAGE, "tr-TR")
-//            .putExtra(MLAsrCaptureConstants.FEATURE, MLAsrCaptureConstants.FEATURE_WORDFLUX)
-//        startActivityForResult(intent, 100)
-
-        val mSpeechRecognizer = MLAsrRecognizer.createAsrRecognizer(requireContext())
-
         MLApplication.getInstance().apiKey = utils.API_KEY
-        // Create an Intent to set parameters.
-        val mSpeechRecognizerIntent = Intent(MLAsrConstants.ACTION_HMS_ASR_SPEECH)
-        // Use Intent for recognition parameter settings.
-        mSpeechRecognizerIntent
-        // Set the language that can be recognized to English. If this parameter is not set, English is recognized by default. Example: "zh-CN": Chinese; "en-US": English; "fr-FR": French; "es-ES": Spanish; "de-DE": German; "it-IT": Italian; "ar": Arabic; "th=TH": Thai; "ms-MY": Malaysian; "fil-PH": Filipino; "tr-TR": Turkish.
-            .putExtra(MLAsrConstants.LANGUAGE, "tr-TR" ) // Set to return the recognition result along with the speech. If you ignore the setting, this mode is used by default. Options are as follows:
-            // MLAsrConstants.FEATURE_WORDFLUX : Recognizes and returns texts through onRecognizingResults .
-            // MLAsrConstants.FEATURE_ALLINONE : After the recognition is complete, texts are returned through onResults .
-            .putExtra(MLAsrConstants.FEATURE, MLAsrConstants.FEATURE_WORDFLUX) // Set the application scenario. MLAsrConstants.SCENES_SHOPPING indicates shopping, which is supported only for Chinese. Under this scenario, recognition for the name of Huawei products has been optimized.
-            .putExtra(MLAsrConstants.SCENES, MLAsrConstants.SCENES_SHOPPING)
-        // Start speech recognition.
-        mSpeechRecognizer.startRecognizing(mSpeechRecognizerIntent)
+        val intent = Intent(activity, MLAsrCaptureActivity::class.java)
+            .putExtra(MLAsrCaptureConstants.LANGUAGE, "en-US")
+            .putExtra(MLAsrCaptureConstants.FEATURE, MLAsrCaptureConstants.FEATURE_WORDFLUX)
+        startActivityForResult(intent, 100)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == AppCompatActivity.RESULT_OK && data != null) {
-            Log.d(ContentValues.TAG, "Success choose photo")
 
-            val result = data.getSerializableExtra(RecognizerIntent.EXTRA_RESULTS)
+        var text = ""
 
+        if (requestCode == 100) {
+            when (resultCode) {
+                MLAsrCaptureConstants.ASR_SUCCESS -> {
+                    if (data != null) {
+                        val bundle = data.extras
+                        if (bundle != null && bundle.containsKey(MLAsrCaptureConstants.ASR_RESULT)) {
+                            text = bundle.getString(MLAsrCaptureConstants.ASR_RESULT)!!
+                               val num = text.toIntOrNull()
+                                 if (num != null){
+                                     numSpc = text.toInt()
+                                 } else{
+                                     Toast.makeText(requireContext(), "Wrong Speech: $text", Toast.LENGTH_LONG).show()
 
+                                 }
+                        }
 
+                        if (text != null && text.isNotEmpty()) {
 
+                            binding.resultText.text = text
+                            micButton.cancelAnimation()
+                            micButton.progress = 0f
+                            result()
+                        }
+
+                    }
+                }
+
+                MLAsrCaptureConstants.ASR_FAILURE -> {
+                    if (data != null) {
+                        val bundle = data.extras
+                        if (bundle != null && bundle.containsKey(MLAsrCaptureConstants.ASR_ERROR_CODE)) {
+                            val errorCode = bundle.getInt(MLAsrCaptureConstants.ASR_ERROR_CODE)
+//                            showFailedDialog(getPrompt(errorCode))
+                        }
+                    }
+                }
+                else -> {}
+            }
         }
+
+
+
+    }
+
+    fun result(){
+        var action: NavDirections?
+        if (numObj.equals(numSpc)){
+             action = LearnFragmentDirections.actionLearnFragmentToResultFragment(true)
+//            Toast.makeText(requireContext(), "Number OK: $numObj", Toast.LENGTH_LONG).show()
+        } else{
+             action= LearnFragmentDirections.actionLearnFragmentToResultFragment(false)
+            Toast.makeText(requireContext(), "Number should be $numObj", Toast.LENGTH_LONG).show()
+        }
+        val handler = Handler()
+        handler.postDelayed({
+            findNavController().navigate(action)
+        },1000)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 
-    object utils{
-        const val API_KEY = "DAEDAHQwerh7OS7lnuOmuyDMLifl13P4bNCjTFmwfadXhD11Ct2Wneb3710tyiOEA37MJAQewSxQKot6D338dXODq7JHZKBHfQN1PA=="
-    }
 
-    override fun onResults(p0: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun onRecognizingResults(p0: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onError(p0: Int, p1: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onStartListening() {
-        TODO("Not yet implemented")
-    }
-
-    override fun onStartingOfSpeech() {
-        TODO("Not yet implemented")
-    }
-
-    override fun onVoiceDataReceived(p0: ByteArray?, p1: Float, p2: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onState(p0: Int, p1: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
 }

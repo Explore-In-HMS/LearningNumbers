@@ -84,12 +84,12 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline_card_top" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/materialTextView2"
+                android:id="@+id/result_text"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:text="6"
-                android:textSize="35dp"
+                android:text="@string/number_input"
+                android:textSize="35sp"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/mic_lottie"
                 app:layout_constraintEnd_toEndOf="parent"
