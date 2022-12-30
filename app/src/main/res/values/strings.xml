@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">learningnumbers</string>
+    <string name="btn_start">Start</string>
+    <string name="how_many">How many?</string>
+    <string name="number_is">Number is:</string>
+    <string name="_6">6</string>
+    <string name="first_text">Learning\nNumbers</string>
+    <string name="button_start">Start</string>
+    <string name="sec_text">Lets learn together!</string>
+    <string name="todo">TODO</string>
+    <string name="start_again">restart</string>
+</resources>

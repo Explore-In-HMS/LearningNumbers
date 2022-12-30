@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="learning_nu">
+
+        <item name="android:textSize">80sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:lineSpacingExtra">-13dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="fontFamily">@font/relay_londrina_solid_black</item>
+    </style>
+
+    <style name="let_s_learn">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="fontFamily">@font/relay_londrina_solid_light</item>
+
+    </style>
+
+    <style name="startButton">
+        <item name="android:textColor">#2295ED</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">50sp</item>
+        <item name="fontFamily">@font/relay_londrina_solid_regular</item>
+    </style>
+
+    <style name="MyCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">40dp</item>
+
+<!--        <item name="cornerSizeTopRight">8dp</item>-->
+<!--        <item name="cornerSizeTopLeft">8dp</item>-->
+<!--        <item name="cornerSizeBottomRight">0dp</item>-->
+<!--        <item name="cornerSizeBottomLeft">0dp</item>-->
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">100dp</item>
+
+
+    </style>
+</resources>

@@ -1,0 +1,71 @@
+plugins {
+    id 'com.android.application'
+    id 'com.huawei.agconnect'
+    id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'com.hms.learningnumbers'
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.hms.learningnumbers"
+        minSdk 22
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+
+    ext {
+        nav_version = "2.5.3"
+        agc_version = "1.7.1.300"
+    }
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+    // Lottie Animation Library
+    implementation "com.airbnb.android:lottie:3.4.2"
+
+    //Jetpack Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Huawei
+    implementation "com.huawei.agconnect:agconnect-core:$agc_version"
+    // Import the base SDK.
+    implementation 'com.huawei.hms:ml-computer-vision-object:3.7.0.301'
+    // Import the object detection and tracking model package.
+    implementation 'com.huawei.hms:ml-computer-vision-object-detection-model:3.7.0.301'
+    // Speech to text
+    implementation "com.huawei.hms:ml-computer-voice-asr-plugin:3.7.0.301"
+}
